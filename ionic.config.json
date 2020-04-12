@@ -1,0 +1,8 @@
+{
+  "name": "wehealth",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}
