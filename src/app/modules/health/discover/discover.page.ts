@@ -15,6 +15,7 @@ import { HealthService } from '../../../services/health.service';
 import { IPositionMap } from '../../../models/position-map.model';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { Platform } from '@ionic/angular';
+import * as healthUtil from '../../../shared/healthUtil';
 
 @Component({
   selector: 'app-discover',
@@ -95,14 +96,6 @@ export class DiscoverPage implements OnInit, AfterViewInit, OnDestroy {
   loadPositionMaps() {
     return this.placeService.loadPositionMaps();
   }
-  findMasterHealthSignal(healthSignals: string[]) {
-    let master = 'normal';
-    master = healthSignals.includes('exposed') ? 'exposed' : master;
-    master = healthSignals.includes('symptoms') ? 'symptoms' : master;
-    master = healthSignals.includes('positive') ? 'positive' : master;
-
-    return master;
-  }
 
   findIconImage(healthSignal: string) {
     return 'assets/icon/health/' + healthSignal + '.png';
@@ -141,7 +134,7 @@ export class DiscoverPage implements OnInit, AfterViewInit, OnDestroy {
           positionMap.userId !== this.authService.userId &&
           this.shouldShowMarker(positionMap.healthSignals)
         ) {
-          const masterHealthSignal = this.findMasterHealthSignal(
+          const masterHealthSignal = healthUtil.findMasterHealthSignal(
             positionMap.healthSignals
           );
           // set marker for others

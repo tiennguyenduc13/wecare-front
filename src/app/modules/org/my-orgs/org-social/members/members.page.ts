@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { InviteService } from 'src/app/services/invite.service';
 import { Invite, IInvite } from 'src/app/models/invite.model';
 import { AlertController } from '@ionic/angular';
+import { OrgService } from 'src/app/services/org.service';
+import { Profile } from 'src/app/models/profile.model';
+import { ActivatedRoute } from '@angular/router';
+import { Org } from 'src/app/models/org.model';
 
 @Component({
   selector: 'app-members',
@@ -11,64 +14,45 @@ import { AlertController } from '@ionic/angular';
 })
 export class MembersPage implements OnInit {
   isLoading = false;
-  invites: Invite[] = [];
+  org: Org;
+  members: Profile[] = [];
 
   constructor(
+    private route: ActivatedRoute,
     private alertCtrl: AlertController,
-    private inviteService: InviteService,
+    private orgService: OrgService,
     private authService: AuthService
   ) {}
+  loadOrg(orgId: string) {
+    this.isLoading = true;
+    this.orgService.loadOrg(orgId).subscribe((org: Org) => {
+      this.isLoading = false;
+      this.org = org;
+
+      this.loadMembers();
+    });
+  }
 
   ngOnInit() {
-    this.loadInvites();
+    console.log('ttt ngOnInit');
+    this.route.paramMap.subscribe((paramMap) => {
+      console.log('ngOnInit', paramMap);
+      const orgId = paramMap.get('orgId');
+      this.loadOrg(orgId);
+    });
   }
 
-  loadInvites() {
+  loadMembers() {
     this.isLoading = true;
-    this.inviteService
-      .loadInvitesByInviteeId(this.authService.userId)
-      .subscribe((invites) => {
+    this.orgService
+      .loadMembers(this.authService.userId, this.org._id)
+      .subscribe((members: Profile[]) => {
         this.isLoading = false;
-        this.invites = invites;
-        console.log('ttt ionViewWillEnter', this.invites);
-      });
-  }
-  showConfirmDialog(invite: Invite) {
-    this.alertCtrl
-      .create({
-        header: 'Invitation',
-        message: invite.inviteText,
-        buttons: [
-          {
-            text: 'Cancel',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: (blah) => {
-              console.log('Confirm Cancel: ');
-            },
-          },
-          {
-            text: 'Accept',
-            handler: () => {
-              console.log('Confirm Okay ');
-              this.inviteService.acceptInvite(invite._id).subscribe((org) => {
-                this.isLoading = false;
-                console.log('Updated org', org);
-                this.loadInvites();
-              });
-            },
-          },
-        ],
-      })
-      .then((alertEl) => {
-        alertEl.present();
+        this.members = members;
+        console.log('ttt ionViewWillEnter', this.members);
       });
   }
   onReview(inviteId: string) {
     this.isLoading = true;
-    this.inviteService.loadInvite(inviteId).subscribe((invite) => {
-      this.isLoading = false;
-      this.showConfirmDialog(invite);
-    });
   }
 }

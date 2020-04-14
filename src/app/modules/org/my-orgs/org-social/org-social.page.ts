@@ -159,7 +159,5 @@ export class OrgSocialPage implements OnInit {
       this.isLoading = false;
     });
   }
-    onShowMembers() {
-      
-  }
+  onShowMembers() {}
 }

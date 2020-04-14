@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Invite } from 'src/app/models/invite.model';
+import * as healthUtil from '../../../../../../shared/healthUtil';
 
 @Component({
   selector: 'app-members-item',
@@ -7,10 +7,15 @@ import { Invite } from 'src/app/models/invite.model';
   styleUrls: ['./members-item.component.scss'],
 })
 export class MembersItemComponent implements OnInit {
-  @Input() invite: Invite;
+  @Input() member: object;
   constructor() {}
 
   ngOnInit() {
-    console.log('Invite ', this.invite);
+    console.log('member ', this.member);
+  }
+
+  hasHealthProblem(healthSignals): boolean {
+    const masterSignal = healthUtil.findMasterHealthSignal(healthSignals);
+    return masterSignal !== 'normal';
   }
 }

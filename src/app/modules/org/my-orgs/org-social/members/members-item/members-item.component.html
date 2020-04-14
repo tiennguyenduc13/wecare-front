@@ -2,18 +2,21 @@
   <!-- <ion-thumbnail slot="start">
     <ion-img [src]="org.imageUrl"></ion-img>
   </ion-thumbnail> -->
-  <ion-label>
+  <ion-label
+    [ngClass]="hasHealthProblem(member.healthSignals) ? 'health-problem' : ''"
+  >
     <!-- <ion-textarea class="message">{{ invite.inviteText }}</ion-textarea> -->
-    <h1>{{ invite.inviteText }}</h1>
-    <div class="org-details">
-      <ion-icon name="calendar" color="primary"></ion-icon>
+    <h1>{{ member.name }}</h1>
+    <div class="details">
       <ion-text color="tertiary" class="space-left">{{
-        invite.inviteDate | date
+        member.email
       }}</ion-text>
-      :
-      <ion-text color="tertiary" class="space-left">{{
-        invite.inviteStatus
-      }}</ion-text>
+      <!-- <ion-text color="red" class="space-left">{{
+        hasHealthProblem(member.healthSignals) ? "problem" : ""
+      }}</ion-text> -->
+      <!-- <ion-text color="tertiary" class="space-left">{{
+        member.inviteStatus
+      }}</ion-text> -->
     </div>
   </ion-label>
 </ion-item>

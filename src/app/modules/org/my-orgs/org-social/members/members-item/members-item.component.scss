@@ -14,11 +14,15 @@ h1 {
   color: var(--ion-color-primary);
 }
 
-.offer-details {
+.details {
   display: flex;
   align-items: center;
 
   .space-left {
     margin-left: 5px;
   }
+}
+
+.health-problem {
+  background-color: orange;
 }

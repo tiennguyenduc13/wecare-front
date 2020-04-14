@@ -14,11 +14,11 @@
         <div *ngIf="isLoading" class="ion-text-center">
           <ion-spinner color="primary"></ion-spinner>
         </div>
-        <ion-list *ngIf="!isLoading && invites && invites.length > 0">
-          <ion-item-sliding *ngFor="let invite of invites">
-            <app-members-item [invite]="invite"></app-members-item>
+        <ion-list *ngIf="!isLoading && members && members.length > 0">
+          <ion-item-sliding *ngFor="let member of members">
+            <app-members-item [member]="member"></app-members-item>
             <ion-item-options>
-              <ion-item-option
+              <!-- <ion-item-option
                 color="medium"
                 *ngIf="invite.inviteStatus==='pending'"
               >
@@ -29,7 +29,7 @@
                 >
                   <ion-icon name="create" slot="icon-only"></ion-icon>
                 </ion-button>
-              </ion-item-option>
+              </ion-item-option> -->
             </ion-item-options>
           </ion-item-sliding>
         </ion-list>

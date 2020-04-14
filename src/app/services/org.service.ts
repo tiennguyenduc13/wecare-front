@@ -37,8 +37,9 @@ export class OrgService {
     );
   }
   loadMembers(userId: string, orgId: string): Observable<any[]> {
+    console.log('start loadMembers', userId, orgId);
     return this.http
-      .get<any>(`${this.orgUrl}/listMembers/${userId}/${orgId}`)
+      .get<any[]>(`${this.orgUrl}/members/${orgId}/${userId}`)
       .pipe(
         map((resData) => {
           console.log('loadMembers result: ', resData);
