@@ -10,12 +10,17 @@ import { DiscoverPage } from './discover.page';
 const routes: Routes = [
   {
     path: '',
-    component: DiscoverPage
-  }
+    component: DiscoverPage,
+  },
 ];
 
 @NgModule({
-  imports: [CommonModule, FormsModule, RouterModule.forChild(routes)],
-  declarations: [DiscoverPage]
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule.forChild(routes),
+    IonicModule,
+  ],
+  declarations: [DiscoverPage],
 })
 export class DiscoverPageModule {}

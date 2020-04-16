@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as healthUtil from '../../../../../../shared/healthUtil';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-members-item',
@@ -14,8 +15,16 @@ export class MembersItemComponent implements OnInit {
     console.log('member ', this.member);
   }
 
-  hasHealthProblem(healthSignals): boolean {
-    const masterSignal = healthUtil.findMasterHealthSignal(healthSignals);
+  hasHealthProblem(): boolean {
+    const masterSignal = healthUtil.findMasterHealthSignal(
+      _.get(this.member, 'healthSignals', [])
+    );
     return masterSignal !== 'normal';
+  }
+  getName() {
+    return _.get(this.member, 'name', '');
+  }
+  getEmail() {
+    return _.get(this.member, 'email', '');
   }
 }

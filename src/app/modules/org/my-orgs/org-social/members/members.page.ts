@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { Invite, IInvite } from 'src/app/models/invite.model';
 import { AlertController } from '@ionic/angular';
 import { OrgService } from 'src/app/services/org.service';
 import { Profile } from 'src/app/models/profile.model';

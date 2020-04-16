@@ -16,8 +16,18 @@
   <ion-grid style="height: 100%;">
     <ion-row style="height: 60%;" text-center>
       <ion-col>
-        <!-- <ion-content #messageContainer>
-          <ion-list *ngFor="let message of messages">
+        <ion-content #messageContainer>
+          <div class="messages-container" *ngIf="messages && messages.length">
+            <ul class="ba">
+              <li *ngFor="let message of messages">
+                <span class="msg-content">{{message.text}}</span>
+                <p>
+                  by {{message.userName}} at {{getTime(message.eventDate)}}
+                </p>
+              </li>
+            </ul>
+          </div>
+          <!-- <ion-list *ngFor="let message of messages">
             <ion-item>
               <ion-area>
                 <h3>{{message.text}}</h3>
@@ -26,19 +36,7 @@
                 </p>
               </ion-area>
             </ion-item>
-          </ion-list>
-        </ion-content> -->
-        <ion-content
-          class=".messages-container"
-          #content
-          [scrollEvents]="true"
-          (ionScroll)="logScrolling($event)"
-        >
-          <ion-list #chatList>
-            <ion-item *ngFor="let message of messages">
-              <ion-label>{{ message.text }}</ion-label>
-            </ion-item>
-          </ion-list>
+          </ion-list> -->
         </ion-content>
       </ion-col>
     </ion-row>

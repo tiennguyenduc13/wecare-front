@@ -1,6 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
-import { ActivatedRoute } from '@angular/router';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
+} from '@angular/core';
+import { AlertController, IonContent, IonList } from '@ionic/angular';
+import { ActivatedRoute, Scroll } from '@angular/router';
 
 import { OrgService } from '../../../../services/org.service';
 import { AuthService } from '../../../../services/auth.service';
@@ -17,7 +23,11 @@ import { IInvite, Invite } from 'src/app/models/invite.model';
   templateUrl: './org-social.page.html',
   styleUrls: ['./org-social.page.scss'],
 })
-export class OrgSocialPage implements OnInit {
+export class OrgSocialPage implements OnInit, OnDestroy {
+  @ViewChild(IonContent) content: IonContent;
+  @ViewChild(IonList, { read: ElementRef }) chatList: ElementRef;
+  private mutationObserver: MutationObserver;
+
   constructor(
     private route: ActivatedRoute,
     private inviteService: InviteService,
@@ -31,18 +41,50 @@ export class OrgSocialPage implements OnInit {
   org: Org;
   messages: Message[] = [];
   message: IMessage;
+  timerEnabled = false;
 
   loadMessages() {
-    this.isLoading = true;
     this.messageService
       .loadMessages(this.org._id)
       .subscribe((messages: Message[]) => {
-        this.isLoading = false;
-        this.messages = messages;
-
-        console.log('ttt ionViewWillEnter', this.messages);
+        console.log('ttt  ', messages.length, this.messages.length);
+        if (messages.length > this.messages.length) {
+          this.messages = messages;
+        }
+        // console.log('ttt loadMessages', this.messages);
       });
   }
+  prepareObserve() {
+    console.log('ionViewDidLoad ');
+    this.mutationObserver = new MutationObserver(async (mutations) => {
+      console.log('mutations ', mutations);
+      setTimeout(() => {
+        if (this.content.scrollToBottom) {
+          this.content.scrollToBottom();
+        }
+      }, 400);
+      //   const scroll = await this.content.getScrollElement();
+      //   scroll.scrollToBottom();
+      //   window.scrollTo(0, document.body.scrollHeight);
+      //   this.content.scrollToBottom().then(() => {
+      //     console.log('Scrolll done ------');
+      //   });
+    });
+
+    this.mutationObserver.observe(this.chatList.nativeElement, {
+      childList: true,
+    });
+  }
+
+  //   scrollToBottom() {
+  //     this.content.scrollToBottom(10);
+
+  //     console.log('scrooled');
+  //   }
+  logScrolling() {
+    console.log('logScrolling : When Scrolling');
+  }
+
   loadOrg(orgId: string) {
     this.isLoading = true;
     this.orgService.loadOrg(orgId).subscribe((org: Org) => {
@@ -57,12 +99,35 @@ export class OrgSocialPage implements OnInit {
         eventDate: new Date(),
       };
 
+      this.prepareObserve();
       this.loadMessages();
+      this.doIntervalRoutine();
     });
   }
+  ionViewWillLeave() {
+    debugger;
+    this.timerEnabled = false;
+  }
+  doIntervalRoutine() {
+    console.log(
+      'Running doIntervalRoutine ',
+      this.timerEnabled,
+      this.loadMessages.length,
+      new Date(),
+      ' : ' + new Date().toString()
+    );
+    if (!this.timerEnabled) {
+      return;
+    }
+    this.loadMessages();
 
+    setTimeout(() => {
+      this.doIntervalRoutine();
+    }, 6000);
+  }
   ngOnInit() {
     console.log('ttt ngOnInit');
+    this.timerEnabled = true;
     this.route.paramMap.subscribe((paramMap) => {
       console.log('ngOnInit', paramMap);
       const orgId = paramMap.get('orgId');
@@ -76,7 +141,10 @@ export class OrgSocialPage implements OnInit {
       });
     });
   }
-
+  ngOnDestroy() {
+    this.timerEnabled = false;
+    debugger;
+  }
   getTime(eventDate: Date): string {
     return util.getTimeFormat(eventDate);
   }

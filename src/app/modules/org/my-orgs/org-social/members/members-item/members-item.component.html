@@ -1,16 +1,12 @@
-<ion-item>
+<ion-item [color]="hasHealthProblem() ? 'warning' : ''">
   <!-- <ion-thumbnail slot="start">
     <ion-img [src]="org.imageUrl"></ion-img>
   </ion-thumbnail> -->
-  <ion-label
-    [ngClass]="hasHealthProblem(member.healthSignals) ? 'health-problem' : ''"
-  >
+  <ion-label>
     <!-- <ion-textarea class="message">{{ invite.inviteText }}</ion-textarea> -->
-    <h1>{{ member.name }}</h1>
+    <h1>{{ getName() }}</h1>
     <div class="details">
-      <ion-text color="tertiary" class="space-left">{{
-        member.email
-      }}</ion-text>
+      <ion-text color="tertiary" class="space-left">{{ getEmail() }}</ion-text>
       <!-- <ion-text color="red" class="space-left">{{
         hasHealthProblem(member.healthSignals) ? "problem" : ""
       }}</ion-text> -->
