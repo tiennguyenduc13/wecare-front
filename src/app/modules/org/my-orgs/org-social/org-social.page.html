@@ -36,7 +36,19 @@
         >
           <ion-list #chatList>
             <ion-item *ngFor="let message of messages">
-              <ion-label>{{ message.text }}</ion-label>
+              <ion-label>
+                <div class="ion-text-wrap message-text">{{ message.text }}</div>
+                <div class="message-details">
+                  <ion-icon name="calendar" color="medium"></ion-icon>
+                  <ion-text color="medium" class="space-left"
+                    >{{getTime(message.eventDate) }}</ion-text
+                  >
+                  <span class="space-left"></span>
+                  <ion-text color="medium" class="ion-float-right"
+                    >by {{ message.userName }}</ion-text
+                  >
+                </div>
+              </ion-label>
             </ion-item>
           </ion-list>
         </ion-content>

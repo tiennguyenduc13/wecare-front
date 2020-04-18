@@ -15,6 +15,8 @@ import { HealthService } from '../../../services/health.service';
 import { IPositionMap } from '../../../models/position-map.model';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 import { Platform } from '@ionic/angular';
+import { PositionMapService } from 'src/app/services/position-map.service';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-discover',
@@ -30,16 +32,20 @@ export class DiscoverPage implements OnInit, AfterViewInit, OnDestroy {
 
   isLoading = false;
   loginName: string;
+  countData: string;
 
   constructor(
     private renderer: Renderer2,
     private authService: AuthService,
-    private placeService: HealthService,
+    private healthService: HealthService,
+    private positionMapService: PositionMapService,
     public backgroundMode: BackgroundMode,
     public platform: Platform
   ) {}
+  ngOnInit() {}
   ionViewWillEnter() {
     console.log('ionViewWillEnter enter ', new Date());
+    this.getHealthCount();
     this.platform.ready().then(() => {
       this.backgroundMode.on('activate').subscribe(() => {
         console.log('ionViewWillEnter activated:---------- ', new Date());
@@ -56,10 +62,9 @@ export class DiscoverPage implements OnInit, AfterViewInit, OnDestroy {
       this.doInterval();
     }, 30000);
   }
-  ngOnInit() {}
 
   saveMyPosition() {
-    this.placeService
+    this.healthService
       .updatePosition(this.authService.userId, this.center)
       .subscribe((positionMap) => {});
   }
@@ -93,7 +98,7 @@ export class DiscoverPage implements OnInit, AfterViewInit, OnDestroy {
     });
   }
   loadPositionMaps() {
-    return this.placeService.loadPositionMaps();
+    return this.healthService.loadPositionMaps();
   }
   findMasterHealthSignal(healthSignals: string[]) {
     let master = 'normal';
@@ -215,5 +220,33 @@ export class DiscoverPage implements OnInit, AfterViewInit, OnDestroy {
         }
       };
     });
+  }
+
+  getHealthCount() {
+    this.positionMapService
+      .loadCountByLocalAddress(this.authService.userId, 'positive')
+      .subscribe((resultData) => {
+        const countData = {
+          city: {
+            name: _.get(resultData, 'city.name', ''),
+            count: _.get(resultData, 'city.count', ''),
+          },
+          county: {
+            name: _.get(resultData, 'county.name', ''),
+            count: _.get(resultData, 'county.count', ''),
+          },
+          state: {
+            name: _.get(resultData, 'state.name', ''),
+            count: _.get(resultData, 'state.count', ''),
+          },
+        };
+        this.countData = countData.city.name
+          ? countData.city.name + ':' + countData.city.count
+          : '' + countData.county.name
+          ? countData.county.name + ':' + countData.county.count
+          : '' + countData.state.name
+          ? countData.state.name + ':' + countData.state.count
+          : '';
+      });
   }
 }

@@ -6,7 +6,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { AlertController, IonContent, IonList } from '@ionic/angular';
-import { ActivatedRoute, Scroll } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { OrgService } from '../../../../services/org.service';
 import { AuthService } from '../../../../services/auth.service';
@@ -26,7 +26,7 @@ import { IInvite, Invite } from 'src/app/models/invite.model';
 export class OrgSocialPage implements OnInit, OnDestroy {
   @ViewChild(IonContent) content: IonContent;
   @ViewChild(IonList, { read: ElementRef }) chatList: ElementRef;
-  private mutationObserver: MutationObserver;
+  //   private mutationObserver: MutationObserver;
 
   constructor(
     private route: ActivatedRoute,
@@ -51,36 +51,9 @@ export class OrgSocialPage implements OnInit, OnDestroy {
         if (messages.length > this.messages.length) {
           this.messages = messages;
         }
-        // console.log('ttt loadMessages', this.messages);
       });
   }
-  prepareObserve() {
-    console.log('ionViewDidLoad ');
-    this.mutationObserver = new MutationObserver(async (mutations) => {
-      console.log('mutations ', mutations);
-      setTimeout(() => {
-        if (this.content.scrollToBottom) {
-          this.content.scrollToBottom();
-        }
-      }, 400);
-      //   const scroll = await this.content.getScrollElement();
-      //   scroll.scrollToBottom();
-      //   window.scrollTo(0, document.body.scrollHeight);
-      //   this.content.scrollToBottom().then(() => {
-      //     console.log('Scrolll done ------');
-      //   });
-    });
 
-    this.mutationObserver.observe(this.chatList.nativeElement, {
-      childList: true,
-    });
-  }
-
-  //   scrollToBottom() {
-  //     this.content.scrollToBottom(10);
-
-  //     console.log('scrooled');
-  //   }
   logScrolling() {
     console.log('logScrolling : When Scrolling');
   }
@@ -96,11 +69,9 @@ export class OrgSocialPage implements OnInit, OnDestroy {
         userName: this.authService.loginName,
         orgId: this.org._id,
         text: '',
-        eventDate: new Date(),
+        eventDate: new Date(null),
       };
 
-      this.prepareObserve();
-      this.loadMessages();
       this.doIntervalRoutine();
     });
   }
@@ -163,7 +134,9 @@ export class OrgSocialPage implements OnInit, OnDestroy {
       .subscribe((newMessage: Message) => {
         this.isLoading = false;
         // add message to list
-        this.messages.push(newMessage);
+        // this.messages.push(newMessage);
+        this.loadMessages();
+
         // reset form
         this.form.get('messageText').setValue('');
       });

@@ -9,3 +9,21 @@
 ul.ba {
   list-style-type: none;
 }
+
+.message-text {
+  font-size: 18px;
+  //   border: 1px solid var(--ion-color-primary);
+  padding: 8px;
+  //   border-radius: 5px;
+  color: var(--ion-color-primary);
+}
+
+.message-details {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+
+  .space-left {
+    margin-left: 5px;
+  }
+}
