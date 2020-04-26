@@ -22,7 +22,7 @@ export class MessageService {
   loadMessages(orgId: string): Observable<Message[]> {
     return this.http.get<any[]>(`${this.messageUrl}/listByOrgId/${orgId}`).pipe(
       map((resData) => {
-        return _.orderBy(resData, ['eventDate'], ['asc']);
+        return _.orderBy(resData, ['eventDate'], ['desc']);
       })
     );
   }

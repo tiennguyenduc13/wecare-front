@@ -20,7 +20,6 @@ export class AuthPage implements OnInit {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController
   ) {}
-
   ngOnInit() {}
 
   authenticate(email: string, password: string) {

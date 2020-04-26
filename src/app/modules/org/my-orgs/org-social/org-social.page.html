@@ -13,85 +13,58 @@
   <div *ngIf="isLoading" class="ion-text-center">
     <ion-spinner color="primary"></ion-spinner>
   </div>
-  <ion-grid style="height: 100%;">
-    <ion-row style="height: 60%;" text-center>
-      <ion-col>
-        <!-- <ion-content #messageContainer>
-          <ion-list *ngFor="let message of messages">
-            <ion-item>
-              <ion-area>
-                <h3>{{message.text}}</h3>
-                <p>
-                  by {{message.userName}} at {{getTime(message.eventDate)}}
-                </p>
-              </ion-area>
-            </ion-item>
-          </ion-list>
-        </ion-content> -->
-        <ion-content
-          class=".messages-container"
-          #content
-          [scrollEvents]="true"
-          (ionScroll)="logScrolling($event)"
-        >
-          <ion-list #chatList>
-            <ion-item *ngFor="let message of messages">
-              <ion-label>
-                <div class="ion-text-wrap message-text">{{ message.text }}</div>
-                <div class="message-details">
-                  <ion-icon name="calendar" color="medium"></ion-icon>
-                  <ion-text color="medium" class="space-left"
-                    >{{getTime(message.eventDate) }}</ion-text
-                  >
-                  <span class="space-left"></span>
-                  <ion-text color="medium" class="ion-float-right"
-                    >by {{ message.userName }}</ion-text
-                  >
-                </div>
-              </ion-label>
-            </ion-item>
-          </ion-list>
-        </ion-content>
-      </ion-col>
-    </ion-row>
-    <ion-row style="height: 20%;" text-center>
-      <ion-col size="9">
-        <ion-item>
-          <form [formGroup]="form" *ngIf="!isLoading">
-            <ion-label position="floating">Enter message ...</ion-label>
-            <ion-input
-              type="text"
-              autocomplete
-              autocorrect
-              formControlName="messageText"
-            ></ion-input>
-          </form>
-        </ion-item>
-      </ion-col>
-      <ion-col size="3">
-        <ion-item>
-          <ion-button (click)="onSendMessage()" slot="end">
-            <ion-icon name="send" slot="icon-only"></ion-icon>
-          </ion-button>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    <ion-row style="height: 20%;" text-center>
-      <ion-col>
+  <div>
+    <ion-list>
+      <ion-item *ngFor="let message of messages">
+        <ion-label>
+          <div class="ion-text-wrap message-text">
+            {{ message.text }}
+          </div>
+          <div class="message-details">
+            <ion-icon name="calendar" color="medium"></ion-icon>
+            <ion-text color="medium" class="space-left"
+              >{{getTime(message.eventDate) }}</ion-text
+            >
+            <span class="space-left"></span>
+            <ion-text color="medium" class="ion-float-right"
+              >by {{ message.userName }}</ion-text
+            >
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+<ion-footer class="footer">
+  <ion-toolbar>
+    <ion-item>
+      <form [formGroup]="form" *ngIf="!isLoading">
+        <ion-input
+          formControlName="messageText"
+          spellcheck="true"
+          autoComplete="true"
+          autocorrect="true"
+          maxlength="140"
+          type="text"
+          placeholder="Enter message ..."
+        ></ion-input>
+        <!-- <button ion-button item-right (click)="onSendMessage()">
+          <ion-icon name="send"></ion-icon>
+        </button> -->
+      </form>
+    </ion-item>
+    <ion-item>
+      <ion-buttons>
+        <ion-button color="primary" expand="full" (click)="onSendMessage()">
+          Send
+        </ion-button>
         <ion-button routerLink="members" color="primary" expand="full">
           Members
         </ion-button>
-      </ion-col>
-      <ion-col>
         <ion-button (click)="onInvite()" color="primary" expand="full">
           Invite
         </ion-button>
-      </ion-col>
-      <!-- <ion-col>
-          <ion-button (click)="onLeaveOrg()" color="primary" expand="block">
-            Leave
-          </ion-button>
-        </ion-col> -->
-    </ion-row>
-  </ion-grid>
-</ion-content>
+      </ion-buttons>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

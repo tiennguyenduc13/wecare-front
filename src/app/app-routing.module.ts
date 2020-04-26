@@ -38,6 +38,14 @@ const routes: Routes = [
     canLoad: [AuthGuard],
   },
   {
+    path: 'shopping',
+    loadChildren: () =>
+      import('./modules/shopping/shopping.module').then(
+        (m) => m.ShoppingPageModule
+      ),
+    canLoad: [AuthGuard],
+  },
+  {
     path: 'profile',
     loadChildren: () =>
       import('./modules/profile/profile.module').then(

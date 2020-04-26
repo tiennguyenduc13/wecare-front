@@ -1,11 +1,5 @@
-import {
-  Component,
-  OnInit,
-  ViewChild,
-  ElementRef,
-  OnDestroy,
-} from '@angular/core';
-import { AlertController, IonContent, IonList } from '@ionic/angular';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { AlertController, IonContent } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 
 import { OrgService } from '../../../../services/org.service';
@@ -24,10 +18,6 @@ import { IInvite, Invite } from 'src/app/models/invite.model';
   styleUrls: ['./org-social.page.scss'],
 })
 export class OrgSocialPage implements OnInit, OnDestroy {
-  @ViewChild(IonContent) content: IonContent;
-  @ViewChild(IonList, { read: ElementRef }) chatList: ElementRef;
-  //   private mutationObserver: MutationObserver;
-
   constructor(
     private route: ActivatedRoute,
     private inviteService: InviteService,
@@ -76,7 +66,6 @@ export class OrgSocialPage implements OnInit, OnDestroy {
     });
   }
   ionViewWillLeave() {
-    debugger;
     this.timerEnabled = false;
   }
   doIntervalRoutine() {
@@ -114,7 +103,6 @@ export class OrgSocialPage implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.timerEnabled = false;
-    debugger;
   }
   getTime(eventDate: Date): string {
     return util.getTimeFormat(eventDate);
@@ -200,5 +188,4 @@ export class OrgSocialPage implements OnInit, OnDestroy {
       this.isLoading = false;
     });
   }
-  onShowMembers() {}
 }
