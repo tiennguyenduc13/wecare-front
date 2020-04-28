@@ -105,6 +105,7 @@ export class DiscoverPage implements OnInit, AfterViewInit, OnDestroy {
     master = healthSignals.includes('exposed') ? 'exposed' : master;
     master = healthSignals.includes('symptoms') ? 'symptoms' : master;
     master = healthSignals.includes('positive') ? 'positive' : master;
+    master = healthSignals.includes('antibody') ? 'antibody' : master;
 
     return master;
   }
@@ -118,6 +119,7 @@ export class DiscoverPage implements OnInit, AfterViewInit, OnDestroy {
       healthSignals.length &&
       (healthSignals.includes('positive') ||
         healthSignals.includes('symptoms') ||
+        healthSignals.includes('antibody') ||
         healthSignals.includes('exposed'))
     ) {
       return true;

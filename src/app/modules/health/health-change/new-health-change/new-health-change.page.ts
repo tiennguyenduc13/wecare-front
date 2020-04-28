@@ -32,6 +32,9 @@ export class NewHealthChangePage implements OnInit {
       rdoExposed: new FormControl(null, {
         updateOn: 'blur',
       }),
+      rdoAntiBody: new FormControl(null, {
+        updateOn: 'blur',
+      }),
       rdoNormal: new FormControl(null, {
         updateOn: 'blur',
       }),
@@ -63,6 +66,9 @@ export class NewHealthChangePage implements OnInit {
         }
         if (this.form.value.rdoExposed) {
           healthSignals.push('exposed');
+        }
+        if (this.form.value.rdoAntiBody) {
+          healthSignals.push('antibody');
         }
         if (this.form.value.rdoNormal) {
           healthSignals.push('normal');
